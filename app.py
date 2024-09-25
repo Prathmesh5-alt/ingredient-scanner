@@ -3,7 +3,7 @@ from paddleocr import PaddleOCR
 import cv2
 import numpy as np
 
-# Set the page configuration as the very first command
+# Set the page configuration with a wide layout
 st.set_page_config(page_title="Ingredient Scanner", layout="wide")
 
 # Initialize PaddleOCR
@@ -49,33 +49,58 @@ def check_dietary_preferences(ingredients, preferences):
     
     return len(problematic_words) == 0, problematic_words
 
-# Custom CSS for aesthetics
+# Custom CSS for a darker theme
 st.markdown("""
     <style>
+    /* Main background color */
     .main {
-        background-color: #f0f2f6;
+        background-color: #1e1e1e;
         padding: 10px;
     }
+
+    /* Text color and style */
+    .stTextInput>div>div>input {
+        background-color: #2c2c2c;
+        color: #f1f1f1;
+        border-radius: 10px;
+        font-size: 18px;
+    }
+
+    /* Button styling */
     .stButton>button {
-        background-color: #ff7f50;
+        background-color: #4caf50;
         color: white;
         border-radius: 10px;
         padding: 10px;
         font-size: 16px;
     }
+
     .stButton>button:hover {
-        background-color: #ff6347;
+        background-color: #45a049;
     }
+
+    /* Checkbox styling */
     .st-checkbox-label {
         font-size: 18px;
-        color: #444444;
+        color: #dcdcdc;
     }
-    .stTextInput>div>div>input {
-        border-radius: 10px;
-        font-size: 18px;
-    }
+
+    /* Image border */
     .stImage>img {
         border-radius: 15px;
+        border: 3px solid #4caf50;
+    }
+
+    /* Success and error messages */
+    .stAlert {
+        background-color: #333;
+        color: #f1f1f1;
+        border-left: 6px solid #4caf50;
+    }
+
+    .stAlert-error {
+        background-color: #333;
+        border-left: 6px solid #ff6347;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -136,31 +161,4 @@ if preferences:
             # Read the image from the camera input
             image = np.array(bytearray(camera_image.read()), dtype=np.uint8)
             img = cv2.imdecode(image, cv2.IMREAD_COLOR)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            
-            # Perform OCR and cache the result
-            result = perform_ocr(img)
-            
-            if not result or not result[0]:  # Check if OCR detected any text
-                st.error("❌ Please provide a clear image of the ingredient list.")
-            else:
-                boxes = [res[0] for res in result[0]]
-                texts = [res[1][0] for res in result[0]]
-
-                # Check if the ingredients meet the preferences and get problematic words
-                is_acceptable, problematic_words = check_dietary_preferences(texts, preferences)
-                
-                # Highlight problematic words
-                highlighted_img = highlight_specific_words(img, boxes, texts, problematic_words)
-                
-                # Display the image with bounding boxes
-                st.image(highlighted_img, caption='Highlighted Ingredients', use_column_width=True)
-                
-                # Display ingredient text and preference result
-                if is_acceptable:
-                    st.success("✅ The product is suitable for your dietary preferences.")
-                else:
-                    st.error("❌ The product is NOT suitable for your dietary preferences.")
-                    st.write(f"**Problematic ingredients:** {', '.join(problematic_words)}")
-else:
-    st.warning("⚠️ Please select at least one dietary restriction before scanning.")
+            img = cv2.cvtColor(img, cv2

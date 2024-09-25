@@ -118,7 +118,12 @@ st.subheader("Step 1: Select Your Dietary Restrictions")
 st.markdown("Check the boxes below to select dietary restrictions that apply to you:")
 
 # Create 2 columns to arrange checkboxes neatly
-col1, col2 = st.columns(2)
+if st.session_state.device == 'mobile':
+    # Use single column layout on mobile
+    preferences_col = st.container()
+else:
+    # Use multi-column layout for desktop
+    col1, col2 = st.columns(2)
 
 preferences = []
 with col1:

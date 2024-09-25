@@ -7,7 +7,7 @@ import numpy as np
 ocr = PaddleOCR(lang='en')
 
 # Cache the OCR results to avoid re-processing
-#@st.experimental_memo
+@st.experimental_memo
 def perform_ocr(img):
     # Perform OCR using PaddleOCR
     result = ocr.ocr(img)
@@ -46,45 +46,90 @@ def check_dietary_preferences(ingredients, preferences):
     
     return len(problematic_words) == 0, problematic_words
 
-# Streamlit app
+# Custom CSS for aesthetics
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f0f2f6;
+        padding: 10px;
+    }
+    .stButton>button {
+        background-color: #ff7f50;
+        color: white;
+        border-radius: 10px;
+        padding: 10px;
+        font-size: 16px;
+    }
+    .stButton>button:hover {
+        background-color: #ff6347;
+    }
+    .st-checkbox-label {
+        font-size: 18px;
+        color: #444444;
+    }
+    .stTextInput>div>div>input {
+        border-radius: 10px;
+        font-size: 18px;
+    }
+    .stImage>img {
+        border-radius: 15px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Streamlit app layout improvements
 st.set_page_config(page_title="Ingredient Scanner", layout="wide")
 st.title("🍽️ Ingredient Scanner for Dietary Preferences")
+
 st.markdown("""
-    This app helps you check if a product meets your dietary restrictions. 
-    Select your preferences below and scan the ingredient list!
-""")
+    Welcome to the **Ingredient Scanner**! Use this tool to quickly check if a product meets your dietary restrictions. 
+    Just select your preferences, scan the ingredient list, and let the app do the rest.
+    """)
 
 # User dietary preferences
-st.subheader("Select Your Dietary Restrictions:")
-preferences_options = [
-    'Gluten-Free',
-    'Lactose Intolerant',
-    'Nut Allergies',
-    'Shellfish Allergy',
-    'Egg Allergy',
-    'Soy Allergy',
-    'Dairy Allergy',
-    'Vegetarian',
-    'Vegan',
-    'FODMAPs Intolerance',
-    'Paleo',
-    'Keto'
-]
+st.subheader("Step 1: Select Your Dietary Restrictions")
+st.markdown("Check the boxes below to select dietary restrictions that apply to you:")
 
-# Get user-selected preferences
+# Create 2 columns to arrange checkboxes neatly
+col1, col2 = st.columns(2)
+
 preferences = []
-for option in preferences_options:
-    if st.checkbox(option):
-        preferences.append(option)
+with col1:
+    if st.checkbox('Gluten-Free'):
+        preferences.append('Gluten-Free')
+    if st.checkbox('Lactose Intolerant'):
+        preferences.append('Lactose Intolerant')
+    if st.checkbox('Nut Allergies'):
+        preferences.append('Nut Allergies')
+    if st.checkbox('Shellfish Allergy'):
+        preferences.append('Shellfish Allergy')
+    if st.checkbox('Egg Allergy'):
+        preferences.append('Egg Allergy')
+
+with col2:
+    if st.checkbox('Soy Allergy'):
+        preferences.append('Soy Allergy')
+    if st.checkbox('Dairy Allergy'):
+        preferences.append('Dairy Allergy')
+    if st.checkbox('Vegetarian'):
+        preferences.append('Vegetarian')
+    if st.checkbox('Vegan'):
+        preferences.append('Vegan')
+    if st.checkbox('FODMAPs Intolerance'):
+        preferences.append('FODMAPs Intolerance')
+    if st.checkbox('Paleo'):
+        preferences.append('Paleo')
+    if st.checkbox('Keto'):
+        preferences.append('Keto')
 
 if preferences:
-    st.markdown("### Now scan the ingredient list:")
+    st.markdown("### Step 2: Scan the Ingredient List")
     
-    # Camera input
-    camera_image = st.camera_input("📷 Click to take a picture")
+    # Camera input with placeholder
+    camera_image = st.camera_input("📷 Take a picture of the ingredient list")
 
     if camera_image is not None:
-        # Only process the image when preferences and camera input are ready
+        # Process image button
         if st.button("Process Image"):
             # Read the image from the camera input
             image = np.array(bytearray(camera_image.read()), dtype=np.uint8)

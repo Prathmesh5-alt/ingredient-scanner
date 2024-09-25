@@ -3,11 +3,14 @@ from paddleocr import PaddleOCR
 import cv2
 import numpy as np
 
+# Set the page configuration as the very first command
+st.set_page_config(page_title="Ingredient Scanner", layout="wide")
+
 # Initialize PaddleOCR
 ocr = PaddleOCR(lang='en')
 
 # Cache the OCR results to avoid re-processing
-#@st.experimental_memo
+@st.experimental_memo
 def perform_ocr(img):
     # Perform OCR using PaddleOCR
     result = ocr.ocr(img)
@@ -78,7 +81,6 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # Streamlit app layout improvements
-st.set_page_config(page_title="Ingredient Scanner")
 st.title("🍽️ Ingredient Scanner for Dietary Preferences")
 
 st.markdown("""

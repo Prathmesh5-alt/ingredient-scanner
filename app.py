@@ -10,7 +10,7 @@ st.set_page_config(page_title="Ingredient Scanner", layout="wide")
 ocr = PaddleOCR(lang='en')
 
 # Cache the OCR results to avoid re-processing
-@st.experimental_memo
+#@st.experimental_memo
 def perform_ocr(img):
     # Perform OCR using PaddleOCR
     result = ocr.ocr(img)

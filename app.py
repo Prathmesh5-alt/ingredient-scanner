@@ -17,7 +17,7 @@ def perform_ocr(img):
     return result
 
 # Define a function to highlight specific words in an image
-def highlight_specific_words(image, boxes, texts, target_words, color=(255, 0, 0), thickness=3):
+def highlight_specific_words(image, boxes, texts, target_words, color=(255, 0, 0), thickness=2):
     for box, text in zip(boxes, texts):
         if any(word.lower() in text.lower() for word in target_words):
             word_box = [tuple(map(int, point)) for point in box]
@@ -49,61 +49,61 @@ def check_dietary_preferences(ingredients, preferences):
     
     return len(problematic_words) == 0, problematic_words
 
-# Custom CSS for a darker theme
-st.markdown("""
-    <style>
-    /* Main background color */
-    .main {
-        background-color: #1e1e1e;
-        padding: 10px;
-    }
+# # Custom CSS for a darker theme
+# st.markdown("""
+#     <style>
+#     /* Main background color */
+#     .main {
+#         background-color: #1e1e1e;
+#         padding: 10px;
+#     }
 
-    /* Text color and style */
-    .stTextInput>div>div>input {
-        background-color: #2c2c2c;
-        color: #f1f1f1;
-        border-radius: 10px;
-        font-size: 18px;
-    }
+#     /* Text color and style */
+#     .stTextInput>div>div>input {
+#         background-color: #2c2c2c;
+#         color: #f1f1f1;
+#         border-radius: 10px;
+#         font-size: 18px;
+#     }
 
-    /* Button styling */
-    .stButton>button {
-        background-color: #4caf50;
-        color: white;
-        border-radius: 10px;
-        padding: 10px;
-        font-size: 16px;
-    }
+#     /* Button styling */
+#     .stButton>button {
+#         background-color: #4caf50;
+#         color: white;
+#         border-radius: 10px;
+#         padding: 10px;
+#         font-size: 16px;
+#     }
 
-    .stButton>button:hover {
-        background-color: #45a049;
-    }
+#     .stButton>button:hover {
+#         background-color: #45a049;
+#     }
 
-    /* Checkbox styling */
-    .st-checkbox-label {
-        font-size: 18px;
-        color: #dcdcdc;
-    }
+#     /* Checkbox styling */
+#     .st-checkbox-label {
+#         font-size: 18px;
+#         color: #dcdcdc;
+#     }
 
-    /* Image border */
-    .stImage>img {
-        border-radius: 15px;
-        border: 3px solid #4caf50;
-    }
+#     /* Image border */
+#     .stImage>img {
+#         border-radius: 15px;
+#         border: 3px solid #4caf50;
+#     }
 
-    /* Success and error messages */
-    .stAlert {
-        background-color: #333;
-        color: #f1f1f1;
-        border-left: 6px solid #4caf50;
-    }
+#     /* Success and error messages */
+#     .stAlert {
+#         background-color: #333;
+#         color: #f1f1f1;
+#         border-left: 6px solid #4caf50;
+#     }
 
-    .stAlert-error {
-        background-color: #333;
-        border-left: 6px solid #ff6347;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+#     .stAlert-error {
+#         background-color: #333;
+#         border-left: 6px solid #ff6347;
+#     }
+#     </style>
+#     """, unsafe_allow_html=True)
 
 # Streamlit app layout improvements
 st.title("🍽️ Ingredient Scanner for Dietary Preferences")

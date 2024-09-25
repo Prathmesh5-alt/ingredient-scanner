@@ -78,7 +78,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # Streamlit app layout improvements
-st.set_page_config(page_title="Ingredient Scanner", layout="wide")
+st.set_page_config(page_title="Ingredient Scanner")
 st.title("🍽️ Ingredient Scanner for Dietary Preferences")
 
 st.markdown("""

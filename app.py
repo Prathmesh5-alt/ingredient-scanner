@@ -161,4 +161,31 @@ if preferences:
             # Read the image from the camera input
             image = np.array(bytearray(camera_image.read()), dtype=np.uint8)
             img = cv2.imdecode(image, cv2.IMREAD_COLOR)
-            img = cv2.cvtColor(img, cv2
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            
+            # Perform OCR and cache the result
+            result = perform_ocr(img)
+            
+            if not result or not result[0]:  # Check if OCR detected any text
+                st.error("❌ Please provide a clear image of the ingredient list.")
+            else:
+                boxes = [res[0] for res in result[0]]
+                texts = [res[1][0] for res in result[0]]
+
+                # Check if the ingredients meet the preferences and get problematic words
+                is_acceptable, problematic_words = check_dietary_preferences(texts, preferences)
+                
+                # Highlight problematic words
+                highlighted_img = highlight_specific_words(img, boxes, texts, problematic_words)
+                
+                # Display the image with bounding boxes
+                st.image(highlighted_img, caption='Highlighted Ingredients', use_column_width=True)
+                
+                # Display ingredient text and preference result
+                if is_acceptable:
+                    st.success("✅ The product is suitable for your dietary preferences.")
+                else:
+                    st.error("❌ The product is NOT suitable for your dietary preferences.")
+                    st.write(f"**Problematic ingredients:** {', '.join(problematic_words)}")
+else:
+    st.warning("⚠️ Please select at least one dietary restriction before scanning.")

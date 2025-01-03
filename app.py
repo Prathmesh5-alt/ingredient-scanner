@@ -110,8 +110,11 @@ st.title("Scan&Shop")
 
 st.markdown("""
     Ever stood in a grocery aisle squinting at ingredient labels, trying to figure out if a product fits your dietary needs?
+        """)
+st.markdown("""
     Just select your preferences, scan the ingredient list, and let the app do the rest.
-    """)
+        """)
+
 
 # User dietary preferences
 st.subheader("Step 1: Select Your Dietary Restrictions")

@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # Set the page configuration with a wide layout
-st.set_page_config(page_title="Ingredient Scanner", layout="wide")
+st.set_page_config(page_title="Scan&Shop", layout="wide")
 
 # Initialize PaddleOCR
 ocr = PaddleOCR(lang='en')
@@ -106,10 +106,10 @@ def check_dietary_preferences(ingredients, preferences):
 #     """, unsafe_allow_html=True)
 
 # Streamlit app layout improvements
-st.title("🍽️ Ingredient Scanner for Dietary Preferences")
+st.title("Scan&Shop")
 
 st.markdown("""
-    Welcome to the **Ingredient Scanner**! Use this tool to quickly check if a product meets your dietary restrictions. 
+    Ever stood in a grocery aisle squinting at ingredient labels, trying to figure out if a product fits your dietary needs?
     Just select your preferences, scan the ingredient list, and let the app do the rest.
     """)
 

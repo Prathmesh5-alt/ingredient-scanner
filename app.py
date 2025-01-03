@@ -162,12 +162,27 @@ if preferences:
         # Process image button
         if st.button("Process Image"):
             # Read the image from the camera input
+            # image = np.array(bytearray(camera_image.read()), dtype=np.uint8)
+            # img = cv2.imdecode(image, cv2.IMREAD_COLOR)
+            # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            
+            # # Perform OCR and cache the result
+            # result = perform_ocr(img)
             image = np.array(bytearray(camera_image.read()), dtype=np.uint8)
             img = cv2.imdecode(image, cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            
+    
+            # Resize the image to reduce its size (e.g., 50% of the original dimensions)
+            scale_percent = 50  # Adjust this value as needed
+            width = int(img.shape[1] * scale_percent / 100)
+            height = int(img.shape[0] * scale_percent / 100)
+            dim = (width, height)
+            img_resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
+    
             # Perform OCR and cache the result
-            result = perform_ocr(img)
+            result = perform_ocr(img_resized)
+
+            
             
             if not result or not result[0]:  # Check if OCR detected any text
                 st.error("❌ Please provide a clear image of the ingredient list.")

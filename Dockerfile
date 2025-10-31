@@ -4,24 +4,26 @@ FROM python:3.10-slim
 # Set working directory
 WORKDIR /app
 
-# Copy all files into container
+# Copy all project files into container
 COPY . /app
 
-# Make sure .streamlit exists and is writable
+# Ensure .streamlit directory exists and is writable
 RUN mkdir -p /app/.streamlit && chmod -R 777 /app/.streamlit
 
-# Copy the Streamlit config file
+# Copy your Streamlit config
 COPY .streamlit/config.toml /app/.streamlit/config.toml
 
-# Tell Streamlit to use this directory
-ENV STREAMLIT_CONFIG_DIR=/app/.streamlit
+# ✅ Set HOME to /app so Streamlit uses /app/.streamlit (not /.streamlit)
 ENV HOME=/app
+
+# Disable usage stats and telemetry
+ENV STREAMLIT_BROWSER_GATHERUSAGESTATS=false
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose Streamlit’s default port
+# Expose Streamlit port (Hugging Face default: 7860)
 EXPOSE 7860
 
-# Run the app
-CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0.0", "--browser.gatherUsageStats=false"]
+# ✅ Run the app
+CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0.0"]
